@@ -7,13 +7,29 @@ use InvalidArgumentException;
 use DateTime;
 
 class Request {
-
-	private $id;
-	private $lang;
 	
-	private $timestamp;
-	private $data;
-	private $rawData;
+	/**
+	 * @var string
+	 */
+	protected $id;
+	
+	/**
+	 * @var string
+	 */
+	protected $lang;
+	
+	/**
+	 * @var DateTime
+	 */
+	protected $timestamp;
+	/**
+	 * @var array|null
+	 */
+	protected $data;
+	/**
+	 * @var string
+	 */
+	protected $rawData;
 
 	/**
 	 * Set up Request with id, lang, timestamp (DateTime)
@@ -39,13 +55,12 @@ class Request {
 	}
 	
 	/**
-	 * @param array $data
-	 * @return IntentRequest|null
+	 * @return Request
 	 */
-	public function fromData(array $data) {
-		$data = $this->data;
-		
-		$metadata = $data['result']['metadata'];
+	public function fromData() {
+		$request = $this;
+
+		$metadata = $this->data['result']['metadata'];
 		if (isset($metadata['intentId'])) {
 			$request = new IntentRequest($this->rawData);
 		}
@@ -54,14 +69,14 @@ class Request {
 	}
 	
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getId() {
 		return $this->id;
 	}
 	
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getLang() {
 		return $this->lang;
@@ -75,7 +90,7 @@ class Request {
 	}
 	
 	/**
-	 * @return mixed
+	 * @return array|null
 	 */
 	public function getData() {
 		return $this->data;

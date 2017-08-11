@@ -3,11 +3,26 @@
 namespace APIAI\Response;
 
 class Response {
-
-	private $speech = null;
-	private $displayText = null;
-	private $data = [];
-	private $source = '20steps';
+	
+	/**
+	 * @var string|null
+	 */
+	protected $speech = null;
+	/**
+	 * @var string|null
+	 */
+	
+	protected $displayText = null;
+	/**
+	 * @var array
+	 */
+	
+	protected $data = [];
+	/**
+	 * @var string
+	 */
+	
+	protected $source = '20steps';
 	
 	/**
 	 * Response constructor.
