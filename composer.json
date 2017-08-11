@@ -1,0 +1,24 @@
+{
+    "name": "20steps/api-ai-webhook-php",
+    "description": "API AI Webhook interface for PHP",
+    "keywords": ["API","AI","Google Home","Google Actions","PHP"],
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Helmut Hoffer von Ankershoffen",
+            "email": "hhva@20steps.de"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "APIAI\\" : "src/"
+        }
+    }
+}
