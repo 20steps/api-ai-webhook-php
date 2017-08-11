@@ -52,6 +52,16 @@ class Response {
 		return $this;
 	}
 	
+	// make it compatible with amazon-alexa-php
+	public function withCard(string $title, string $displayText) {
+		return $this->withDisplayText($displayText);
+	}
+	
+	public function withLinkAccountCard($foo,$bar) {
+		// nop
+		return $this;
+	}
+	
 	/**
 	 * @param array $data
 	 * @return $this
@@ -59,6 +69,14 @@ class Response {
 	public function withData(array $data) {
 		$this->data = $data;
 		
+		return $this;
+	}
+	
+	/**
+	 * @return $this
+	 */
+	public function endSession() {
+		// nop
 		return $this;
 	}
 	
