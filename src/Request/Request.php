@@ -9,20 +9,6 @@ use DateTime;
 class Request {
 	
 	/**
-	 * @var string
-	 */
-	protected $id;
-	
-	/**
-	 * @var string
-	 */
-	protected $lang;
-	
-	/**
-	 * @var DateTime
-	 */
-	protected $timestamp;
-	/**
 	 * @var array|null
 	 */
 	protected $data;
@@ -30,19 +16,54 @@ class Request {
 	 * @var string
 	 */
 	protected $rawData;
+	
+	/**
+	 * @var string
+	 */
+	protected $lang;
+	
+	/**
+	 * @var Status
+	 */
+	protected $status;
+	
+	/**
+	 * @var DateTime
+	 */
+	protected $timestamp;
+	
+	/**
+	 * @var string
+	 */
+	protected $sessionId;
+	
+	/**
+	 * @var Result
+	 */
+	protected $result;
+	
+	/**
+	 * @var string
+	 */
+	protected $id;
+	
+	/**
+	 * @var OriginalRequest
+	 */
+	protected $originalRequest;
 
 	/**
 	 * Set up Request with id, lang, timestamp (DateTime)
 	 * @param string $data
 	 */
 	public function __construct(string $rawData) {
-		// Decode the raw data into a JSON array.
 		$data = json_decode($rawData, TRUE);
 		$this->data = $data;
 		$this->rawData = $rawData;
-
-		$this->id = $data['id'];
+		
 		$this->lang = $data['lang'];
+		
+		$this->status = new Status($data['status']);
 		
 		$timestampData = $data['timestamp'];
 		if (is_numeric($timestampData)) {
@@ -51,7 +72,15 @@ class Request {
 		} else {
 			$this->timestamp = new DateTime($timestampData);
 		}
-
+		
+		$this->sessionId = $data['sessioId'];
+		
+		$this->result = $data['result'];
+		
+		$this->id = $data['id'];
+		
+		$this->originalRequest = $this->createOriginalRequest($data['originalRequest']);
+		
 	}
 	
 	/**
@@ -69,27 +98,6 @@ class Request {
 	}
 	
 	/**
-	 * @return string
-	 */
-	public function getId() {
-		return $this->id;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getLang() {
-		return $this->lang;
-	}
-	
-	/**
-	 * @return DateTime
-	 */
-	public function getTimestamp() {
-		return $this->timestamp;
-	}
-	
-	/**
 	 * @return array|null
 	 */
 	public function getData() {
@@ -101,6 +109,76 @@ class Request {
 	 */
 	public function getRawData() {
 		return $this->rawData;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getLang() {
+		return $this->lang;
+	}
+	
+	/**
+	 * @return Status
+	 */
+	public function getStatus() {
+		return $this->status;
+	}
+	
+	/**
+	 * @return DateTime
+	 */
+	public function getTimestamp() {
+		return $this->timestamp;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getSessionId() {
+		return $this->sessionId;
+	}
+	
+	/**
+	 * @return Result
+	 */
+	public function getResult() {
+		return $this->result;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getId() {
+		return $this->id;
+	}
+	
+	/**
+	 * @return OriginalRequest
+	 */
+	public function getOriginalRequest() {
+		return $this->originalRequest;
+	}
+	
+	// helpers
+	
+	/**
+	 * @param $data
+	 * @return OriginalRequest
+	 */
+	protected function createOriginalRequest($data) {
+		if (!isset($data['source'])) {
+			throw new RuntimeException('Element source missing in original request');
+		}
+
+		$source = $data['source'];
+		$className = '\\APIAI\\Request\\' . ucfirst($source).'Request';
+
+		if (!class_exists($className)) {
+			return new OriginalRequest($data);
+		}
+		
+		return new $className($data);
 	}
 
 }
