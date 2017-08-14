@@ -2,6 +2,8 @@
 	
 	namespace APIAI\Request;
 	
+	use APIAI\Util\Util;
+	
 	class OriginalRequest {
 		
 		/**
@@ -20,9 +22,9 @@
 		protected $data;
 		
 		public function __construct($data) {
-			$this->source = isset($data['source']) ? $data['source'] : null;
-			$this->version = isset($data['version']) ? $data['version'] : null;
-			$this->data = isset($data['data']) ? $data['data'] : null;
+			$this->source = Util::getValueFromData($data,'source',null,true);
+			$this->version = Util::getValueFromData($data,'version',null,true);
+			$this->data = Util::getValueFromData($data,'data',null);
 		}
 		
 		/**

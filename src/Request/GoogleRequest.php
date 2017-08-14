@@ -2,6 +2,8 @@
 	
 	namespace APIAI\Request;
 	
+	use APIAI\Util\Util;
+	
 	class GoogleRequest extends OriginalRequest {
 		
 		/**
@@ -37,9 +39,9 @@
 		
 		public function __construct($data) {
 			parent::__construct($data);
-			$this->isInSandbox = isset($data['isInSandbox']) ? $data['isInSandbox'] : null;
-			$this->surface = isset($data['surface']) ? new GoogleSurface($data['surface']) : null;
-			$inputsData = isset($data['inputs']) ? $data['inputs'] : null;
+			$this->isInSandbox = Util::getValueFromData($data,'isInSandbox',false);
+			$this->surface = new GoogleSurface(Util::getValueFromData($data,'surface',null,true));
+			$inputsData = Util::getValueFromData($data,'inputs',null,true);
 			if ($inputsData && is_array($inputsData) && count($inputsData)>0) {
 				foreach ($inputsData as $inputData) {
 					$this->inputs[]=new GoogleInput($inputData);

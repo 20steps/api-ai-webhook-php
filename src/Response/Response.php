@@ -7,21 +7,21 @@ class Response {
 	/**
 	 * @var string|null
 	 */
-	protected $speech = null;
+	protected $speech;
+
 	/**
 	 * @var string|null
 	 */
-	
-	protected $displayText = null;
+	protected $displayText;
+
 	/**
-	 * @var array
+	 * @var array|null
 	 */
+	protected $data;
 	
-	protected $data = [];
 	/**
 	 * @var string
 	 */
-	
 	protected $source = '20steps';
 	
 	/**
@@ -39,6 +39,7 @@ class Response {
 	 */
 	public function respond(string $speech) {
 		$this->speech = $speech;
+		
 		return $this;
 	}
 	
@@ -53,8 +54,16 @@ class Response {
 	}
 	
 	// make it compatible with amazon-alexa-php
+	
+	/**
+	 * @param string $title
+	 * @param string $displayText
+	 * @return $this
+	 */
 	public function withCard(string $title, string $displayText) {
-		return $this->withDisplayText($displayText);
+		$this->withDisplayText($displayText);
+		
+		return $this;
 	}
 	
 	public function withLinkAccountCard($foo,$bar) {
@@ -73,6 +82,20 @@ class Response {
 	}
 	
 	/**
+	 * @param array $googleData
+	 * @return $this
+	 */
+	public function withGoogleData(array $googleData) {
+		if (!$this->data) {
+			$this->data = [];
+		}
+
+		$this->data['google']=$googleData;
+
+		return $this;
+	}
+	
+	/**
 	 * @return $this
 	 */
 	public function endSession() {
@@ -86,11 +109,16 @@ class Response {
      * @return array
      */
 	public function render() {
-		return [
+		$rtn = [
 			'speech' => $this->speech,
-			'displayText' => $this->displayText,
-			'data' => $this->data,
 			'source' => $this->source
 		];
+		if ($this->data) {
+			$rtn['data']=$this->data;
+		}
+		if ($this->displayText) {
+			$rtn['displayText'] = $this->displayText;
+		}
+		return $rtn;
 	}
 }

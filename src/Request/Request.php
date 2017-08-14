@@ -2,9 +2,9 @@
 
 namespace APIAI\Request;
 
-use RuntimeException;
-use InvalidArgumentException;
 use DateTime;
+
+use APIAI\Util\Util;
 
 class Request {
 	
@@ -61,11 +61,11 @@ class Request {
 		$this->data = $data;
 		$this->rawData = $rawData;
 		
-		$this->lang = $data['lang'];
+		$this->lang = Util::getValueFromData($data,'langs',null,true);
 		
-		$this->status = new Status($data['status']);
+		$this->status = new Status(Util::getValueFromData($data,'status',null,true));
 		
-		$timestampData = $data['timestamp'];
+		$timestampData = Util::getValueFromData($data,'timestamp',null,true);
 		if (is_numeric($timestampData)) {
 			$this->timestamp = new DateTime();
 			$this->timestamp->setTimestamp($timestampData);
@@ -73,13 +73,13 @@ class Request {
 			$this->timestamp = new DateTime($timestampData);
 		}
 		
-		$this->sessionId = $data['sessioId'];
+		$this->sessionId = Util::getValueFromData($data,'sessionId',null,true);
 		
-		$this->result = $data['result'];
+		$this->result = Util::getValueFromData($data,'result',null,true);
 		
-		$this->id = $data['id'];
+		$this->id = Util::getValueFromData($data,'id',null,true);
 		
-		$this->originalRequest = $this->createOriginalRequest($data['originalRequest']);
+		$this->originalRequest = $this->createOriginalRequestFromData($data);
 		
 	}
 	
@@ -166,19 +166,20 @@ class Request {
 	 * @param $data
 	 * @return OriginalRequest
 	 */
-	protected function createOriginalRequest($data) {
-		if (!isset($data['source'])) {
-			throw new RuntimeException('Element source missing in original request');
-		}
+	protected function createOriginalRequestFromData($data) {
+		$originalRequestData = Util::getValueFromData($data,'originalRequest');
+		if ($originalRequestData) {
+			$source = Util::getValueFromData($originalRequestData,'source',null,true);
 
-		$source = $data['source'];
-		$className = '\\APIAI\\Request\\' . ucfirst($source).'Request';
+			$className = '\\APIAI\\Request\\' . ucfirst($source).'Request';
 
-		if (!class_exists($className)) {
-			return new OriginalRequest($data);
+			if (!class_exists($className)) {
+				return new OriginalRequest($data);
+			}
+			
+			return new $className($data);
 		}
-		
-		return new $className($data);
+		return null;
 	}
 
 }
