@@ -39,6 +39,7 @@
 		
 		public function __construct($data) {
 			parent::__construct($data);
+			$data = Util::getValueFromData($data,'data',null,true);
 			$this->isInSandbox = Util::getValueFromData($data,'isInSandbox',false);
 			$this->surface = new GoogleSurface(Util::getValueFromData($data,'surface',null,true));
 			$inputsData = Util::getValueFromData($data,'inputs',null,true);
