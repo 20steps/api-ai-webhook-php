@@ -61,7 +61,7 @@ class Request {
 		$this->data = $data;
 		$this->rawData = $rawData;
 		
-		$this->lang = Util::getValueFromData($data,'langs',null,true);
+		$this->lang = Util::getValueFromData($data,'lang',null,true);
 		
 		$this->status = new Status(Util::getValueFromData($data,'status',null,true));
 		
@@ -174,10 +174,10 @@ class Request {
 			$className = '\\APIAI\\Request\\' . ucfirst($source).'Request';
 
 			if (!class_exists($className)) {
-				return new OriginalRequest($data);
+				return new OriginalRequest($originalRequestData);
 			}
 			
-			return new $className($data);
+			return new $className($originalRequestData);
 		}
 		return null;
 	}
