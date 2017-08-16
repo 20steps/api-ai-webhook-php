@@ -8,7 +8,12 @@
 		 * @var bool
 		 */
 		private $expectUserResponse;
-
+		
+		/**
+		 * @var bool
+		 */
+		private $isSsml;
+		
 		/**
 		 * @var GoogleRichResponse
 		 */
@@ -20,8 +25,9 @@
 		 * @param $expectUserResponse
 		 * @param GoogleRichResponse $richResponse
 		 */
-		public function __construct($expectUserResponse = false, GoogleRichResponse $richResponse = null) {
+		public function __construct($expectUserResponse = false, $isSsml = false, GoogleRichResponse $richResponse = null) {
 			$this->setExpectUserResponse($expectUserResponse);
+			$this->setIsSsml($isSsml);
 			$this->setRichResponse($richResponse);
 		}
 		
@@ -38,6 +44,23 @@
 		 */
 		public function setExpectUserResponse($expectUserResponse) {
 			$this->expectUserResponse = $expectUserResponse;
+			
+			return $this;
+		}
+		
+		/**
+		 * @return bool
+		 */
+		public function isSsml() {
+			return $this->isSsml;
+		}
+		
+		/**
+		 * @param bool $isSsml
+		 * @return GoogleData
+		 */
+		public function setIsSsml($isSsml) {
+			$this->isSsml = $isSsml;
 			
 			return $this;
 		}
@@ -62,7 +85,8 @@
 		
 		public function render() {
 			$rtn = [
-				'expectUserResponse' => $this->isExpectUserResponse()
+				'expectUserResponse' => $this->isExpectUserResponse(),
+				'isSsml' => $this->isSsml()
 			];
 			if ($this->getRichResponse()) {
 				$rtn['richResponse']=$this->getRichResponse()->render();

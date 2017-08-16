@@ -38,7 +38,7 @@ class Response {
 		$this->source = $source;
 		$this->createGoogleData = $createGoogleData;
 		if ($this->createGoogleData) {
-			$this->googleData = new GoogleData(false,new GoogleRichResponse());
+			$this->googleData = new GoogleData(false,false, new GoogleRichResponse());
 		}
 	}
 	
