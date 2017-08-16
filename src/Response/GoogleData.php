@@ -23,7 +23,7 @@
 		public function render() {
 			$rtn = [
 				'items' => array_map(function(AbstractGoogleItem $item) {
-					$item->render();
+					return $item->render();
 				},$this->getItems())
 			];
 			return $rtn;
