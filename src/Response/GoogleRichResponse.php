@@ -53,7 +53,7 @@
 				},$this->getItems()),
 				'suggestions' => array_map(function(GoogleSuggestion $suggestion) {
 					return $suggestion->render();
-				},$this->getItems())
+				},$this->getSuggestions())
 			];
 			return $rtn;
 		}

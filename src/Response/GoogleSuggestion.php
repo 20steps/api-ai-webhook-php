@@ -19,6 +19,15 @@
 		}
 		
 		/**
+		 * @return array
+		 */
+		public function render() {
+			return [
+				'title' => $this->getTitle()
+			];
+		}
+		
+		/**
 		 * @return string
 		 */
 		public function getTitle() {
@@ -34,7 +43,5 @@
 			
 			return $this;
 		}
-		
-		
 		
 	}
