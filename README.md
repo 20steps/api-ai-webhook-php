@@ -1,10 +1,14 @@
 # API AI Webhook PHP Library
 
-This library provides a convient interface for developing Webhooks for API AI.
+This library provides a convient interface for developing Webhooks for API AI and Google Assistant.
 
 ## Info
 
-WIP
+Work in progress.
+
+Capabilities:
+- Basic serialization/deserialization 
+- Basic support for rich messages for Google Actions
 
 ## Usage
 
@@ -30,13 +34,14 @@ if ($apiaiRequest instanceof IntentRequest) {
 ```
 
 ### Response
-You can build an APIAI response with the `Response` class. You can optionally set a display or additional data.
+You can build an APIAI response with the `Response` class. You can optionally set a display text or add basic cards for Google Assistant.
 
 Here's a few examples.
 ```php
 $response = new \APIAI\Response\Response('my-assistant');
 $response->respond('Cooool. I\'ll lower the temperature a bit for you!')
-	->withDisplayText('Temperature decreased by 2 degrees');
+	->withDisplayText('Temperature decreased by 2 degrees')
+	->withCard('My card title','My formatted text')
 ```
 
 To output the response, simply use the `->render()` function, e.g. in Laravel you would create the response like so:
