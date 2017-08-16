@@ -17,8 +17,10 @@
 		 * @return array
 		 */
 		public function render() {
-			return [
-				'textToSpeech' => $this->getTextToSpeech()
+			return ['simpleResponse' =>
+				        [
+							'textToSpeech' => $this->getTextToSpeech()
+						]
 			];
 		}
 		

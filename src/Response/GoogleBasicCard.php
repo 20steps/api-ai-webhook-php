@@ -27,10 +27,12 @@
 		 * @return array
 		 */
 		public function render() {
-			return [
-				'title' => $this->getTitle(),
-				'subtitle' => $this->getSubtitle(),
-				'formattedText' => $this->getFormattedText()
+			return ['basicCard' =>
+				[
+					'title' => $this->getTitle(),
+					'subtitle' => $this->getSubtitle(),
+					'formattedText' => $this->getFormattedText()
+				]
 			];
 		}
 		
