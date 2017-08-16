@@ -13,6 +13,9 @@
 			$this->setTextToSpeech($textToSpeech);
 		}
 		
+		/**
+		 * @return array
+		 */
 		public function render() {
 			return [
 				'textToSpeech' => $this->getTextToSpeech()

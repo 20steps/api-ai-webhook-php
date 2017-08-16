@@ -46,6 +46,9 @@
 			return $this->suggestions;
 		}
 		
+		/**
+		 * @return array
+		 */
 		public function render() {
 			$rtn = [
 				'items' => array_map(function(AbstractGoogleItem $item) {

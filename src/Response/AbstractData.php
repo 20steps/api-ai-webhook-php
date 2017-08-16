@@ -4,6 +4,9 @@
 	
 	abstract class AbstractData {
 		
+		/**
+		 * @return array
+		 */
 		abstract public function render();
 		
 	}

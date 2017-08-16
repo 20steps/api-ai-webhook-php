@@ -82,7 +82,9 @@
 			return $this;
 		}
 		
-		
+		/**
+		 * @return array
+		 */
 		public function render() {
 			$rtn = [
 				'expectUserResponse' => $this->isExpectUserResponse(),

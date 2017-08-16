@@ -23,6 +23,9 @@
 			$this->setTitle($title)->setFormattedText($formattedText)->setSubtitle($subtitle);
 		}
 		
+		/**
+		 * @return array
+		 */
 		public function render() {
 			return [
 				'title' => $this->getTitle(),
