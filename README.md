@@ -8,7 +8,7 @@ Work in progress.
 
 Capabilities:
 - Basic serialization/deserialization 
-- Basic support for rich messages for Google Actions
+- Basic support for rich responses for Google Assistant
 
 ## Usage
 
