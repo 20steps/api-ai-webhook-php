@@ -2,6 +2,31 @@
 	
 	namespace APIAI\Response;
 	
-	class GoogleData {
+	class GoogleData extends AbstractData {
+		
+		/**
+		 * @var AbstractGoogleItem[]
+		 */
+		private $items = [];
+		
+		public function addItem(AbstractGoogleItem $item) {
+			$this->items[]=$item;
+		}
+		
+		/**
+		 * @return AbstractGoogleItem[]
+		 */
+		public function getItems() {
+			return $this->items;
+		}
+		
+		public function render() {
+			$rtn = [
+				'items' => array_map(function(AbstractGoogleItem $item) {
+					$item->render();
+				},$this->getItems())
+			];
+			return $rtn;
+		}
 		
 	}

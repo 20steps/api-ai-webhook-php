@@ -15,9 +15,9 @@ class Response {
 	protected $displayText;
 
 	/**
-	 * @var array|null
+	 * @var GoogleData|null
 	 */
-	protected $data;
+	protected $googleData;
 	
 	/**
 	 * @var string
@@ -25,12 +25,21 @@ class Response {
 	protected $source = '20steps';
 	
 	/**
+	 * @var bool
+	 */
+	protected $createGoogleData;
+	
+	/**
 	 * Response constructor.
 	 *
 	 * @param string $source
 	 */
-	public function __construct(string $source='20steps') {
+	public function __construct(string $source='20steps',$createGoogleData = true) {
 		$this->source = $source;
+		$this->createGoogleData = $createGoogleData;
+		if ($this->createGoogleData) {
+			$this->googleData = new GoogleData();
+		}
 	}
 	
 	/**
@@ -39,7 +48,11 @@ class Response {
 	 */
 	public function respond(string $speech) {
 		$this->speech = $speech;
-		
+
+		if ($this->createGoogleData) {
+			$this->googleData->addItem(new GoogleSimpleResponse($speech));
+		}
+
 		return $this;
 	}
 	
@@ -60,8 +73,11 @@ class Response {
 	 * @param string $displayText
 	 * @return $this
 	 */
-	public function withCard(string $title, string $displayText) {
-		$this->withDisplayText($displayText);
+	public function withCard(string $title, string $text, string $subtitle = null) {
+
+		if ($this->createGoogleData) {
+			$this->googleData->addItem(new GoogleBasicCard($title,$text,$subtitle));
+		}
 		
 		return $this;
 	}
@@ -72,25 +88,11 @@ class Response {
 	}
 	
 	/**
-	 * @param array $data
+	 * @param GoogleData $googleData
 	 * @return $this
 	 */
-	public function withData(array $data) {
-		$this->data = $data;
-		
-		return $this;
-	}
-	
-	/**
-	 * @param array $googleData
-	 * @return $this
-	 */
-	public function withGoogleData(array $googleData) {
-		if (!$this->data) {
-			$this->data = [];
-		}
-
-		$this->data['google']=$googleData;
+	public function withGoogleData(GoogleData $googleData) {
+		$this->googleData = $googleData;
 
 		return $this;
 	}
@@ -113,8 +115,12 @@ class Response {
 			'speech' => $this->speech,
 			'source' => $this->source
 		];
-		if ($this->data) {
-			$rtn['data']=$this->data;
+		$data = [];
+		if ($this->googleData) {
+			$data['google']=$this->googleData->render();
+		}
+		if (count($data)>0) {
+			$rtn['data']=$data;
 		}
 		if ($this->displayText) {
 			$rtn['displayText'] = $this->displayText;
