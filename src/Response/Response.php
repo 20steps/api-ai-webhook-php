@@ -38,7 +38,7 @@ class Response {
 		$this->source = $source;
 		$this->createGoogleData = $createGoogleData;
 		if ($this->createGoogleData) {
-			$this->googleData = new GoogleData();
+			$this->googleData = new GoogleData(false,new GoogleRichResponse());
 		}
 	}
 	
@@ -50,7 +50,7 @@ class Response {
 		$this->speech = $speech;
 
 		if ($this->createGoogleData) {
-			$this->googleData->addItem(new GoogleSimpleResponse($speech));
+			$this->googleData->getRichResponse()->addItem(new GoogleSimpleResponse($speech));
 		}
 
 		return $this;
@@ -76,7 +76,7 @@ class Response {
 	public function withCard(string $title, string $text, string $subtitle = null) {
 
 		if ($this->createGoogleData) {
-			$this->googleData->addItem(new GoogleBasicCard($title,$text,$subtitle));
+			$this->googleData->getRichResponse()->addItem(new GoogleBasicCard($title,$text,$subtitle));
 		}
 		
 		return $this;
